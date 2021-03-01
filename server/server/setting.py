@@ -1,0 +1,5 @@
+USER="root"
+PASSWORD="Fswmysql"
+DB_NAME="online_competition"
+HOST="129.28.101.21"
+PORT="3306"

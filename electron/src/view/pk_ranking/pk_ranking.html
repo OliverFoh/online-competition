@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PK排行榜</title>
+    <link rel="stylesheet" href="css/pk_ranking.css">
+
+    <!-- import Vue.js -->
+    <script src="//vuejs.org/js/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <!-- import stylesheet -->
+    <link rel="stylesheet" href="//unpkg.com/view-design/dist/styles/iview.css">
+    <!-- import iView -->
+    <script src="//unpkg.com/view-design/dist/iview.min.js"></script>
+</head>
+<body>
+
+    <div id="pk-header">
+    header!!!
+    </div>
+    <div id="pk-content">
+        <div class="menuList">
+            <ul>
+                <li v-for="(item,index) in list" :key="item.id" :class="{active:num==index}" @click="getNum(index)">
+                    {{item}}
+                </li>
+            </ul>
+        </div>
+        <div class="tabCon">
+            <div v-for='(itemCon,index) in tabContents' v-show="index == num">
+                {{itemCon}}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el:'#pk-content',
+            data: {
+                num: 0,
+                list: ["连胜排行榜","胜率排行榜"],
+                tabContents: ["连胜.......................","胜率..................."]
+            },
+            methods: {
+                getNum(index){
+                    this.num = index;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

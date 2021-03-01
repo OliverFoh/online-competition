@@ -1,0 +1,135 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(-225deg, #FFFEFF 0%, #D7FFFE 100%);, #ffafbd 0%, #c9ffbf 100%);
+}
+/* 头部信息样式布局*/
+#header{
+    width: 100%;
+    height: 10%;
+    /*background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);*/
+}
+.header-left{
+    width: 70%;
+    height: 100%;
+    float: left;
+}
+.header-middle{
+    width: 5%;
+    height: 100%;
+    float: left;
+    /*margin-top: 10px;*/
+}
+.header-right{
+    width: 22%;
+    height: 100%;
+    float: left;
+    margin-left: 2%;
+    /*position: absolute;*/
+}
+.header-right .dropdown{
+/*margin-top: 30px;*/
+}
+
+
+/*内容 样式布局*/
+#content{
+    width: 100%;
+    height: 80%;   /*hr占高度了！！！！！*/
+    /*background: #4cae4c;*/
+}
+#con-start{
+    width: 50%;
+    height: 100%;
+    float: left;
+
+
+
+    /*-webkit-clip-path: polygon(0 0, 38% 0, 70% 100%, 0% 100%);*/
+    /*clip-path: polygon(0 0, 38% 0, 70% 100%, 0% 100%);*/
+    /*background: #269abc;*/
+    /*background: #4cae4c;*/
+    /*position: relative;*/
+}
+#con-start .start-top{
+    width: 100%;
+    height: 50%;
+    /*background: #5bc0de;*/
+
+}
+.start-top .robot-pattern{
+    width: 50%;
+    height: 100%;
+    float: left;
+    /*background: #a94442;*/
+    text-align: center;
+
+    position: relative;
+}
+
+.start-top .player-pattern{
+    width: 50%;
+    height: 100%;
+    float: left;
+    text-align: center;
+
+    position: relative;
+
+}
+.robot-pattern div,
+.player-pattern div{
+    width: 50%;
+    height: 50%;
+
+    border-radius: 50%;
+    background: #449d44;
+
+    position: absolute;
+    left:50%;    /* 定位父级的50% */
+    top:50%;
+    transform: translate(-50%,-50%); /*自己的50% */
+
+}
+
+#con-start .start-bottom{
+    width: 100%;
+    height: 50%;
+    /*background: #d58512;*/
+    /*text-align: center;*/
+    /*margin-top: 25%;*/
+    margin-left:50%;
+
+
+    /*position: relative;*/
+    /*left:50%;    !* 定位父级的50% *!*/
+    /*top:50%;*/
+    /*transform: translate(-50%,-50%); !*自己的50% *!*/
+}
+
+#con-pk{
+    width: 50%;
+    height: 100%;
+    float: left;
+    position: relative;
+    /*background: #5bc0de;*/
+}
+
+#con-pk .pk-ranking{
+    width: 30%;
+    height: 20%;
+    /*background: #269abc;*/
+    text-align: center;
+
+    position: absolute;
+    left:50%;    /* 定位父级的50% */
+    top:50%;
+    transform: translate(-50%,-50%); /*自己的50% */
+}
+
+
+
+

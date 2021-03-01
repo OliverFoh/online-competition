@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心</title>
+    <link rel="stylesheet" href="css/person.css">
+    <link rel="stylesheet" href="css/percircle.css">
+    <link rel="stylesheet" href="css/normalize.css">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div id="content">
+
+        <div class="header">
+            <div class="header_left"><img src="image/person_img.jpg" alt=""></div>
+            <div class="header_right"><p>About Me!</p></div>
+        </div>
+        <div class="content">
+            <div class="con-hr">
+               <hr>
+            </div>
+            <div class="con-img">
+                <img src="image/person_tou.jpg" alt="">
+            </div>
+            <div class="con-info">
+                <p class="info-list">用户ID：04182065</p>
+                <p class="info-list">昵称：笑笑</p>
+                <p class="info-list">手机：1325846532</p>
+                <button type="button" class="btn" data-toggle="modal" data-target="#myModal">
+                               修改信息
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content"  style="background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Modify Information</h4>
+                            </div>
+                            <div class="modal-body">
+<!--                                <form class="form-horizontal">-->
+<!--                                    <p>密码：<input type="password" id="new_password" placeholder="password" class="form-control" style="width: 50%"></p>-->
+<!--                                    <p>昵称：<input type="text" id="new_nick_name" placeholder="nick_name" class="form-control" ></p>-->
+<!--                                    <p>电话：<input type="text" id="new_tel" placeholder="telephone" class="form-control" ></p>-->
+<!--                                    <button type="button" class="btn btn-default" >确认</button>-->
+<!--                                </form>-->
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Password</label>
+                                        <div class="col-sm-10" style="width: 50%">
+                                            <input type="password" class="form-control" id="password" placeholder="password">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Nick_name</label>
+                                        <div class="col-sm-10" style="width: 50%">
+                                            <input type="text" id="new_nick_name" class="form-control"  placeholder="nick_name" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Telephone</label>
+                                        <div class="col-sm-10" style="width: 50%">
+                                            <input type="text" id="new_tel" class="form-control"  placeholder="telephone" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-left: 30%;">
+                                        <button type="button" class="btn btn-default" >确认</button>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="header">
+            <div class="header_left"><img src="image/winner.jpg" alt=""></div>
+            <div class="header_right"><p>我的成绩</p></div>
+        </div>
+        <div class="container">
+            <div class="con_1">
+                <table border="1px" width="100%">
+                    <tr>
+                        <td>等级</td>
+                        <td>胜率</td>
+                        <td>连胜次数</td>
+                        <td>比赛次数</td>
+                        <td>平均成绩</td>
+                        <td>平均用时</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td style="margin: 0 auto;">
+                            <div id="orangecircle" class="c100 p80 orange">
+                                <span>80%</span>
+                                <div class="slice">
+                                    <div class="bar"></div>
+                                    <div class="fill"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>6</td>
+                        <td>21</td>
+                        <td>87</td>
+                        <td>00:01:03</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="con_2">
+                <div class="tab_left" id="left_tab">
+
+                </div>
+                <div class="tab_right" id="right_tab">
+
+                </div>
+            </div>
+            <br><br><br><br><br>
+        </div>
+
+    </div>
+
+
+
+
+
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/percircle.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <script type="text/javascript">
+        var dom = document.getElementById("left_tab");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        option = {
+            // title : {
+            //     text: '某站点用户访问来源',
+            //     subtext: '纯属虚构',
+            //     x:'center'
+            // },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            // legend: {
+            //     orient: 'vertical',
+            //     left: 'left',
+            //     data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+            // },
+            series : [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:[
+                        {value:335, name:'直接访问'},
+                        {value:310, name:'邮件营销'},
+                        {value:234, name:'联盟广告'},
+                        {value:135, name:'视频广告'},
+                        {value:1548, name:'搜索引擎'}
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        ;
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+
+
+
+        var dom1 = document.getElementById("right_tab");
+        var myChart1 = echarts.init(dom1);
+        var app1 = {};
+        option1 = null;
+        option1 = {
+            // title: {
+            //     text: '基础雷达图'
+            // },
+            // tooltip: {},
+            // legend: {
+            //     data: ['预算分配（Allocated Budget）', '实际开销（Actual Spending）']
+            // },
+            radar: {
+                // shape: 'circle',
+                name: {
+                    textStyle: {
+                        color: '#fff',
+                        backgroundColor: '#999',
+                        borderRadius: 3,
+                        padding: [3, 5]
+                    }
+                },
+                indicator: [
+                    { name: '销售（sales）', max: 6500},
+                    { name: '管理（Administration）', max: 16000},
+                    { name: '信息技术（Information Techology）', max: 30000},
+                    { name: '客服（Customer Support）', max: 38000},
+                    { name: '研发（Development）', max: 52000},
+                    { name: '市场（Marketing）', max: 25000}
+                ]
+            },
+            series: [{
+                name: '预算 vs 开销（Budget vs spending）',
+                type: 'radar',
+                // areaStyle: {normal: {}},
+                data : [
+                    {
+                        value : [4300, 10000, 28000, 35000, 50000, 19000],
+                        name : '预算分配（Allocated Budget）'
+                    },
+                    {
+                        value : [5000, 14000, 28000, 31000, 42000, 21000],
+                        name : '实际开销（Actual Spending）'
+                    }
+                ]
+            }]
+        };;
+        if (option1 && typeof option1 === "object") {
+            myChart1.setOption(option1, true);
+        }
+	//查看个人信息请求
+	$.ajax({
+							
+							url: "http://127.0.0.1:5000/api/user/viewPersonInfo",
+							type: "GET",
+							xhrFields: {
+								withCredentials: true
+							},
+							crossDomain:true,
+							dataType: "json",
+							success: function (res) {
+								console.log(res)
+							},
+							//contentType: "application/json; charset=utf-8",
+							error: function () {
+								console.log("请求失败！");
+							}
+						
+						})
+						console.log(document.cookie)
+	
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>开始游戏</title>
+    <link rel="stylesheet" href="css/start.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+</head>
+<body>
+    <div id="header">
+        <div class="header-left">
+            <p>灾害常识答题平台</p>
+        </div>
+        <div class="header-middle">
+            <img src="image/person_tou.jpg" alt="" width="100%" height="100%" style="border-radius: 50%;">
+        </div>
+        <div class="header-right">
+<!--            <p>account</p>-->
+<!--            <ul class="nav" style="display: none;">-->
+<!--                <li><a href="../person/person.html"><img src="image/person_img.png" alt="" >个人主页</a></li>-->
+<!--                <li><a href="#"><img src="image/exit_img.png" alt="">退出</a></li>-->
+<!--            </ul>-->
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    account
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="../person/person.html"><img src="image/person_img.png" alt="" >个人主页</a></li>
+                    <li class="exit"><a href="#"><img src="image/exit_img.png" alt="">退出</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div id="content">
+        <div id="con-start" class="animated fadeInLeft">
+            <div class="start-top" style="display: none;">
+                <div class="robot-pattern">
+                    <div>
+                        <a href="../robot_pattern/robot_pattern.html">机器人模式</a>
+                    </div>
+                </div>
+                <div class="player-pattern">
+                    <div>
+                        <a href="../player_pattern/player_pattern.html">玩家模式</a>
+                    </div>
+                </div>
+            </div>
+            <div class="start-bottom">
+                <button id="matching">开始匹配</button>
+            </div>
+        </div>
+
+
+        <div id="con-pk" class="animated fadeInRight">
+            <div class="pk-ranking">
+                <button id="ranking-list">PK排行榜</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+        $("#matching").click(
+            function() {
+                /*if ($(".start-top").css("display") == "none")
+                {
+                    $(".start-top").show(2000);
+                }
+                else{
+                    $(".start-top").hide(2000);
+                }*/
+				
+				window.location.href = "../answer.html"
+
+            }
+
+        );
+        $("#ranking-list").click(function () {
+            window.location.href = "../pk_ranking/pk_ranking.html";
+        });
+        $(".exit").click(function () {
+            $.ajax({
+
+                url: "http://127.0.0.1:5000/api/out",
+                type: "GET",
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain:true,
+                dataType: "json",
+                success: function (res) {
+                    alert(res);
+                    if (res["is_login"] ===false) {
+                        window.location.href = "../index/index.html";
+                    }
+
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

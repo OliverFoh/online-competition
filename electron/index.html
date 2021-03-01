@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="GWrite (WYSIWYG editor)">
+  <title></title>
+  <style>
+  webview {
+    display:inline-flex;
+    min-width:1350px;
+    min-height:660px;
+  }
+  webview.hide {
+    visibility: hidden;
+  }
+  </style>
+</head>
+<body>
+  <div style="width:100%;display:flex;flex-direction:row">
+        <button id="houtui" style="width:50%; backgrund-color:red;border:none" onclick="goBackWebView()" >后退</button>
+        <button id="qianjin" style="width:50%; backgrund-color: red;border:none" onclick="goForwardWebView()" >前进</button>
+    </div>
+  <div>
+    <webview   src="http://www.cityfoodmap.com:9091"    autosize="on"   minwidth="1350"    minheight="660"  ></webview>
+  </div>
+</body>
+<script>
+ var webview =
+  onload = () => {
+       webview = document.querySelector('webview')
+
+   }
+   function goBackWebView(){
+     webview.goBack()
+   }
+   function goForwardWebView(){
+     webview.goForward()
+   }
+</script>
+</html>

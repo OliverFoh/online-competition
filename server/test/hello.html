@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="./jquery-3.4.1.min.js"></script>
+<script>
+     $.ajax({
+        url :"http://129.28.101.21:5000/api/register",
+        type:'post',
+         contentType: 'application/json; charset=UTF-8',
+        dataType:'json',
+         data:JSON.stringify({
+             account:'04171226',
+             password:'000',
+             tel:'123',
+             nick_name:'Daniel'
+
+
+         }),
+        success:function (res) {
+            //console.log(res.headers);
+            console.log(res);
+            //console.log(typeof res);
+        },
+        error:function (res) {
+            console.log(res);
+        }
+    })
+</script>
+</body>
+</html>

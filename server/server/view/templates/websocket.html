@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/socket.io/2.3.0/socket.io.js"></script>
+</head>
+<body>
+<h1 id="t"></h1>
+<button onclick="buildConnect()">建立连接</button>
+<button>加入房间</button>
+<button>开始游戏</button>
+<button>退出房间</button>
+<button>断开连接</button>
+<script type="text/javascript">
+    function buildConnect(){
+
+    }
+    $(document).ready(function() {
+        var status=null
+        namespace = '/compete';
+        var socket = io.connect('http://127.0.0.1:5000'+ namespace);
+        //console.log(location.protocol + '//' + document.domain + ':' + location.port +
+        socket.on('connect',function (res) {        //监听初次连接回复
+            if (res){
+                console.log(res)
+
+            }
+
+        })
+        socket.on('server_response',function (res) {        //监听服务器连接回复
+            console.log(typeof (res))
+            console.log(res)
+            status=res.connection
+            if(status===true){      //若已经成功连接则提交用户账号信息
+                socket.emit('join',{'user_id':'04171221','room':'lucky'},function (res) {  //请求加入房间
+                    console.log(res)
+                })
+            }
+        })
+
+        /*socket.on('server_response', function(res) {
+            console.log(res.data);
+            $('#t').text(res.data);
+        });*/
+        console.log('haha')
+    });
+</script>
+</body>
+</html>
+
+
+

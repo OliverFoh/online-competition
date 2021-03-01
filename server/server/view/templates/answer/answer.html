@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ViewUI example</title>
+
+    <!-- 外部js引用 -->
+    <link rel="stylesheet" type="text/css" href="http://unpkg.com/view-design/dist/styles/iview.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/vue/2.5.2/vue.min.js"></script>
+    <script type="text/javascript" src="http://unpkg.com/view-design/dist/iview.min.js"></script>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+   <script src="https://cdn.bootcss.com/socket.io/2.3.0/socket.io.js"></script>
+</head><body>
+
+<!-- <div>
+
+    <i-progress :percent="25"  :stroke-width="20" text-inside />
+</div> -->
+<div id='main_contest'>
+    <!-- <i-progress  :percent="scoreA" :stroke-width="20" text-inside /> -->
+    
+    <i-circle :percent="percent" :stroke-color="color">
+            <Icon v-if="percent == 0" type="ios-checkmark" size="60" style="color:#5cb85c"></Icon>
+            <span v-else style="font-size:24px">{{ second}}s</span>
+    </i-circle>
+    
+   
+    <!-- 题目标题 -->
+    <h3 style="text-align: center">{{ question.title }}</h3>
+    <Tag>{{isSingleChoice}}</Tag>
+    <ButtonGroup v-for="item in question.choice"  vertical>
+    <i-button  @click='show(item.choice_name)' long size='large'>{{item.content}}</i-button>
+    </ButtonGroup>
+    <!-- 多选选项组 -->
+    <!-- <Radio border v-model="single"  @on-change="show" vertical v-for="item in question.choice" :label="item.content" :key="item.choice_name"  size="large"></Radio>
+     -->
+    
+    <!-- 单选选项组 -->
+    <!-- <radio-group  vertical  size="large" @on-change="show" >
+        <Radio  border v-for="item in question.choice"  :label="item.content" :key="item.choice_name"></Radio>
+    </radio-group> -->
+    <i-progress  :stroke-color="['#108ee9', '#87d068']" :percent="scoreA" :stroke-width="20" text-inside />
+    <i-progress  :stroke-color="['#108ee9', '#87d068']" :percent="scoreB" :stroke-width="20" text-inside />
+</div>
+
+<style>
+    /* body{ text-align:center} */
+#main_contest{vertical-align:middle;display:table-cell; width:100%;height:100%}
+.scoreLine{
+
+
+}
+
+</style>
+
+
+<script>
+    var mainDiv=new Vue({
+        el:'#main_contest',
+        data:{
+            question:{},
+            isSingleChoice:'多选',
+            isShow:true,
+            percent:'100',
+            second:'10',
+            scoreA:'10',
+            scoreB:'50',
+            single:false,
+            questionIndex:1,
+            socketObj:null
+            
+        },
+        
+        methods: {
+            show:function (choice_name) {
+                console.log(choice_name)
+                /*if(choice_name===this.question.result){
+                    this.scoreA=this.scoreA+10
+
+                }*/
+                // this.socketObj.send({'id':'123'},function (res) {
+                // console.log(res)
+                // })
+                var that=this
+                /*this.data.socketObj.emit('join',{'score':this.data.score},function (res) {      //上传自己实时分数
+                    console.log(res)
+
+                })*/
+                
+                $.ajax({
+                    url :"http://127.0.0.1:5000/api/robot",
+                    type:'get',
+                    async:false,
+                     //contentType: 'application/json; charset=UTF-8',
+                    dataType:'json',
+                    success:function (res) {
+                        that.timer = setTimeout(()=>{   //设置延迟执行
+                            that.question=res.data
+                            
+                        },800);
+                        that.percent='100'
+                        console.log(res.data);
+                        //console.log(typeof res);
+                    },
+                    error:function (res) {
+                        console.log(res);
+                    }
+                })
+                console.log('success')
+            },
+            updateSeconds:function(){
+                if(this.percent==0){
+                    this.show()
+                    return false
+                }
+                this.percent-=10
+                this.second=this.percent/10
+            },
+            reLoad:function () {
+                this.isShow=false
+            }
+        },
+        //获取题目信息
+        getQuestionInfo:function(){
+            if(this.questionIndex<10){
+                this.socketObj.emit('')
+            }
+
+        },
+        //提交答题结果
+        commitAnswerResult:function(){
+            this.socketObj.emit('')
+
+        },
+        computed: {
+            color () {
+                let color = '#2db7f5';
+                if (this.percent == 0) {
+                    color = '#5cb85c';
+                }
+                return color;
+            }
+        },
+
+        /*挂载到页面之前执行*/
+        beforeMount:function(){
+
+            if(this.question.is_single===0){
+                this.isSingleChoice='单选'
+            }
+            this.show()
+        },
+        mounted:function(){
+            //创建连接，发起匹配请求
+            // namespace = '/compete';
+            // var socket = io.connect('http://127.0.0.1:5000'+ namespace);
+            // //console.log(location.protocol + '//' + document.domain + ':' + location.port + namespace)
+            // socket.on('server_response', function(res) {
+            // console.log(res.data);
+            
+            // if(res.data==='ok'){
+            //     console.log('连接成功')
+            //     socket.emit('join',{room:'double',account:'04171220'},function(res){
+            //         console.log(res.data)
+            //     });
+            // }
+            // });
+            /*var status=null
+            namespace = '/compete';
+            var socket = io.connect('http://127.0.0.1:5000'+ namespace);
+            //console.log(location.protocol + '//' + document.domain + ':' + location.port +
+            socket.on('connect',function (res) {        //监听初次连接回复
+                if (res){
+                    console.log(res)
+                }
+            })*/
+            this.show()
+            this.timer = setInterval(this.updateSeconds, 1000);
+            console.log('开始倒计时')
+        }
+    })
+  </script>
+</body>
+</html>
