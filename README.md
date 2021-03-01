@@ -2,11 +2,7 @@
 
 ## 写在前面
 
-该软件是参加第七届共享杯大赛(附带官网链接
-
-[共享杯]: http://share.escience.net.cn/nav/newIndex
-
-)做的，当时是选的是科学普及赛道，刚开始是选择直接从底层的socket通信开始写，再加上用Qt做图形界面，但是后来随着代码量的增多，开发工作异常繁重，并且Qt做的页面不太好实现动画，于是便换为了Flask+Websocket+Vue+Electron的结构，事实证明当时的技术选型是正确的，做出来的效果基本和想象中的一致。下面的部分会详细介绍到一些开发中的细节。
+该软件是参加第七届共享杯大赛做的，当时是选的是科学普及赛道，刚开始是选择直接从底层的socket通信开始写，再加上用Qt做图形界面，但是后来随着代码量的增多，开发工作异常繁重，并且Qt做的页面不太好实现动画，于是便换为了Flask+Websocket+Vue+Electron的结构，事实证明当时的技术选型是正确的，做出来的效果基本和想象中的一致。下面的部分会详细介绍到一些开发中的细节。
 
 ## **需求分析**
 
@@ -26,9 +22,59 @@
 
 ![主体功能流程.jpg](https://i.loli.net/2019/09/29/sCS16wbFHOoQUIB.png)
 
-## 匹配算法
 
-### ELO
+
+## 技术方案
+
+​		双人在线灾害常识答题竞赛软件在设计之初立足于简洁、高效、共享的理念，为了同时兼顾易用性与美观性，我们在技术选型上确定了前后端分离的开发方案。其中前端使用了Vue框架进行开发，提高了开发效率，在前端开发完成后为了适配PC端的运行情景，我们基于Electron进行了二次打包，从而可以定制化的构建出适配于windows、Mac、Linux等平台的可运行程序。同时，服务端则是基于python Flask 框架进行开发，项目开发中充分体现了flask框架可定制、易于配置的优点，抛弃了传统开发的模板语言，开发了restful形式的api接口。另外，后端数据存储在mysql中，在一些涉及到用户信息的敏感操作时优化了鉴权流程，提高了用户的使用体验。其中逻辑比较复杂的地方则是在线匹配答题时为了提高玩家间的交互性，使用了websocket技术实时传送彼此的答题分数等信息，从而动态的进行展示。
+
+### 服务端
+
+​		在后端使用到了flask这款web框架，还是比较好上手的，虽然在开发过程中踩的坑挺多的，但是还是学习到了不少关于这款框架的东西，包括session-cookie的处理，Restful-Api的接口映射，及flask- sqlalchemy与mysql的关联等，虽然没有用到redis之类的做缓存（可能是当时觉得服务器配置一般，不适合后台跑太多进程，比赛使用，应该实际上线使用可能性不大/(ㄒoㄒ)/~~），但还是有去在本地用redis实现缓存，虽然行得通，但感觉效果改变不是很明显，可能还是业务量太小的原因吧，接下来着重说明一下项目结构。
+
+- __init__.py
+
+  加载配置文件，初始化app对象
+
+- controller
+
+  负责基本逻辑功能的实现
+
+- view
+
+  存放静态文件（因为前端直接打包为exe，除过static目录下存放用户头像，其他未使用view目录）
+
+- model
+
+  底层DAO,映射数据表结构
+
+- app.py
+
+  创建app对象，启动服务
+
+### 交互设计
+
+​		软件页面的整体颜色偏于简约、渐变的风格，在设计时，为了使游戏页面更加统一、美观并且节省开发成本，我们使用了Bootstrap+iView+Vue框架，选择性的使用了其中的组件库和插件，提高了页面的加载速度。另外，虽然为每个用户在初始化时配置了默认头像，但用户可以在个人中心页替换为个性化的头像，昵称亦是如此。同时，在个人中心页面使用Echarts图表来对用户以往的一些比赛得分、平均用时、不同类型题型正确率等信息进行个性化展示，方便用户了解自身的灾害常识掌握情况。最后，在答题页面我们设计了倒计时环、分数条、大按钮等组件来充分体现出玩家在线pk时的交互性、实时性与游戏性。
+
+### Websocket
+
+​		之所以将websocket单独拿出来讲是因为整个软件的匹配部分都是围绕websocket技术实现的，在之前客户端与服务器之间的连接都是一次性的，即发送数据结束后就断开连接，那么此时如果需要服务器主动向客户端推送消息就需要使用到**websocket**
+
+> **WebSocket**是一种[网络传输协议](https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE)，可在单个[TCP](https://zh.wikipedia.org/wiki/%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE)连接上进行[全双工](https://zh.wikipedia.org/wiki/%E5%85%A8%E9%9B%99%E5%B7%A5)通信，位于[OSI模型](https://zh.wikipedia.org/wiki/OSI%E6%A8%A1%E5%9E%8B)的[应用层](https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E5%B1%82)。WebSocket协议在2011年由[IETF](https://zh.wikipedia.org/wiki/%E4%BA%92%E8%81%94%E7%BD%91%E5%B7%A5%E7%A8%8B%E4%BB%BB%E5%8A%A1%E7%BB%84)标准化为[RFC 6455](https://tools.ietf.org/html/rfc6455)，后由[RFC 7936](https://tools.ietf.org/html/rfc7936)补充规范。[Web IDL](https://zh.wikipedia.org/w/index.php?title=Web_IDL&action=edit&redlink=1)中的WebSocket API由[W3C](https://zh.wikipedia.org/wiki/%E4%B8%87%E7%BB%B4%E7%BD%91%E8%81%94%E7%9B%9F)标准化。
+>
+> WebSocket使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在WebSocket API中，浏览器和服务器只需要完成一次握手，两者之间就可以创建持久性的连接，并进行双向数据传输。
+>
+> ​																																														————来自维基百科
+
+在flask框架中利用flask-socktio来实现websocket功能。
+
+### Electron
+
+非常感谢electron这个GUI环境，可以完美的将自己的前端页面放进去运行，通过electron-builder插件可以打包为想要的格式（exe或压缩包）
+
+### 匹配算法（待做）
+
+#### ELO
 
 利用选手的等级分进行匹配，选手的等级分计算过程如下：在每局比赛之前，根据参赛选手的当前分数，比赛结果的期望被计算出来， 这个期望值对之后选手的加分和丢分有着重大的影响，简单说来，排名更高的选手被认为应该赢得比赛，因此如果高排位选手赢得了比赛，他只会加较少的分数(相对于对手获胜的情况)，同时如果他输掉了比赛，他会损失很多的分数。 ELO 排名系统选手的数量和水平间呈现正态分布，如图 2 所示，从图中可以看出，绝大部分玩家都位于普通水平段，而顶尖玩家和初学者则位于分布的两端。 根据大数定律，一个玩家或者队伍所完成的比赛越多， 系统对他的评级也就越精确。 统计证据显示，系统的评级分数会在有效分数周围最多 200 分范围内波动。 分数反映了玩家相对于其他参与者的相对位置，由于大家都使用统一的评分模型，在玩家比赛足够多时， 这个分数作为玩家的水平值是可行的。
 
@@ -52,42 +98,6 @@ K值是一个极限值，代表理论上最多可以赢一个玩家的得分和�
 公式Ea和Eb中分母的400是怎么来的呢？为何是400，不是200、100或者是其他？
 根据公式可以得出，当K值相同的情况下，越高的分母，越低的积分变化。总体来说400是一个平衡的、万金油的值、让多数玩家积分保持 标准正态分布 的值。
 
-## Flask
+## 作品演示
 
-在后端使用到了flask这款web框架，还是比较好上手的，虽然在开发过程中踩的坑挺多的，但是还是学习到了不少关于这款框架的东西，包括session-cookie的处理，Restful-Api的接口映射，及flask- sqlalchemy与mysql的关联等，虽然没有用到redis之类的做缓存（可能是当时觉得服务器配置一般，不适合后台跑太多进程，比赛使用，应该实际上线使用可能性不大/(ㄒoㄒ)/~~），但还是有去在本地用redis实现缓存，虽然行得通，但感觉效果改变不是很明显，可能还是业务量太小的原因吧，接下来着重说明一下项目结构。
-
-- __init__.py
-
-  加载配置文件，初始化app对象
-
-- controller
-
-  负责基本逻辑功能的实现
-
-- view
-
-  存放静态文件（因为前端直接打包为exe，除过static目录下存放用户头像，其他未使用view目录）
-
-- model
-
-  底层DAO,映射数据表结构
-
-- app.py
-
-  创建app对象，启动服务
-
-## Websocket
-
-之所以将websocket单独拿出来讲是因为整个软件的匹配部分都是围绕websocket技术实现的，在之前客户端与服务器之间的连接都是一次性的，即发送数据结束后就断开连接，那么此时如果需要服务器主动向客户端推送消息就需要使用到**websocket**
-
-> **WebSocket**是一种[网络传输协议](https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE)，可在单个[TCP](https://zh.wikipedia.org/wiki/%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE)连接上进行[全双工](https://zh.wikipedia.org/wiki/%E5%85%A8%E9%9B%99%E5%B7%A5)通信，位于[OSI模型](https://zh.wikipedia.org/wiki/OSI%E6%A8%A1%E5%9E%8B)的[应用层](https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E5%B1%82)。WebSocket协议在2011年由[IETF](https://zh.wikipedia.org/wiki/%E4%BA%92%E8%81%94%E7%BD%91%E5%B7%A5%E7%A8%8B%E4%BB%BB%E5%8A%A1%E7%BB%84)标准化为[RFC 6455](https://tools.ietf.org/html/rfc6455)，后由[RFC 7936](https://tools.ietf.org/html/rfc7936)补充规范。[Web IDL](https://zh.wikipedia.org/w/index.php?title=Web_IDL&action=edit&redlink=1)中的WebSocket API由[W3C](https://zh.wikipedia.org/wiki/%E4%B8%87%E7%BB%B4%E7%BD%91%E8%81%94%E7%9B%9F)标准化。
->
-> WebSocket使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在WebSocket API中，浏览器和服务器只需要完成一次握手，两者之间就可以创建持久性的连接，并进行双向数据传输。
->
-> ​																		————来自维基百科
-
-那么在flask中我是如何实现websocket的，接下来就是flask-socktio这个登场了
-
-## Electron
-
-非常感谢electron这个GUI环境，可以完美的将自己的前端页面放进去运行，通过electron-builder插件可以打包为想要的格式（exe或压缩包）
+https://1drv.ms/v/s!ApkMtnzNxlVofWVbBMzNH5dTmdw?e=fJN9zB
